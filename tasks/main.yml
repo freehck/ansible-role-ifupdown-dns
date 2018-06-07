@@ -17,8 +17,8 @@
 - name: configure domain for interfaces.d/{{iface_name}}
   lineinfile:
     path: /etc/network/interfaces.d/{{iface_name}}
-    regexp: "^(.*)dns-search.*$"
-    line: "\1dns-search {{iface_domain}}"
+    regexp: '^(.*)dns-search.*$'
+    line: '\1dns-search {{iface_domain}}'
     backrefs: yes
     state: present
   when: iface_domain is defined
