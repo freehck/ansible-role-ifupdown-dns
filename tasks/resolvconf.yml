@@ -6,13 +6,15 @@
     regexp: "^nameserver.*"
     line: "nameserver {{iface_nameserver}}"
     state: present
+  when: iface_nameserver is defined
 
-- name: update domain for resolvconf/{{iface_name}}
+- name: update domain for resolvconf/{{iface_domain}}
   lineinfile:
     path: "{{resolvconf_iface_file}}"
     regexp: "^search.*"
     line: "search {{iface_domain}}"
     state: present
+  when: iface_domain is defined
 
 - name: update resolvconf
   shell: resolvconf -u
