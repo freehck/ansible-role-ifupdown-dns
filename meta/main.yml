@@ -1,6 +1,6 @@
 galaxy_info:
-  author: freehck
-  description: configure dns with network/interfaces and resolvconf
+  author: Alexander Chistyakov
+  description: deploy gitlab
   license: GPLv3
 
   min_ansible_version: 2.5
@@ -13,6 +13,6 @@ galaxy_info:
     versions:
       - all
 
-  galaxy_tags: [ system, dns, network, resolvconf ]
+  galaxy_tags: [ gitlab ]
 
 dependencies: []
