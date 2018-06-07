@@ -1,0 +1,35 @@
+---
+
+- name: set common facts
+  set_fact:
+    iface_configured: no
+    resolvconf_iface_file: "/var/run/resolvconf/interface/{{iface_name}}.{{iface_type | default('inet')}}"
+
+- name: configure nameserver for interfaces.d/{{iface_name}}
+  lineinfile:
+    path: /etc/network/interfaces.d/{{iface_name}}
+    regexp: "^(.*)dns-nameservers.*$"
+    line: "\1dns-nameservers {{iface_nameserver}}"
+    state: present
+  when: iface_nameserver is defined
+
+- name: configure domain for interfaces.d/{{iface_name}}
+  lineinfile:
+    path: /etc/network/interfaces.d/{{iface_name}}
+    regexp: "^(.*)dns-search.*$"
+    line: "\1dns-search {{iface_domain}}"
+    state: present
+  when: iface_domain is defined
+
+- name: check iface resolvconf configuration -- file
+  stat:
+    path: "{{resolvconf_iface_file}}"
+  register: iface_resolvconf
+
+- name: check iface resolvconf configuration -- set fact
+  set_fact:
+    iface_configured: "{{iface_resolvconf.stat.exists}}"
+
+- name: need to reconfigure resolvconf
+  include_tasks: resolvconf.yml
+  when: iface_configured

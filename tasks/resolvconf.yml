@@ -1,0 +1,18 @@
+---
+
+- name: update nameserver for resolvconf/{{iface_name}}
+  lineinfile:
+    path: "{{resolvconf_iface_file}}"
+    regexp: "^nameserver.*"
+    line: "nameserver {{iface_nameserver}}"
+    state: present
+
+- name: update domain for resolvconf/{{iface_name}}
+  lineinfile:
+    path: "{{resolvconf_iface_file}}"
+    regexp: "^search.*"
+    line: "search {{iface_domain}}"
+    state: present
+
+- name: update resolvconf
+  shell: resolvconf -u
